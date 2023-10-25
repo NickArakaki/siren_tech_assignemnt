@@ -4,8 +4,9 @@ from collections import deque
 class User:
     def __init__(self, name):
         self.name = name
-        self.friends = set()
+        self.friends = set() # sets to prevent accidental duplicates, can be replaced with lists and some error handling
         self.favorite_movies = set()
+
 
     def add_friend(self, friend):
         """
@@ -13,6 +14,7 @@ class User:
         """
         self.friends.add(friend)
         friend.friends.add(self)
+
 
     def remove_friend(self, friend):
         """
@@ -22,11 +24,13 @@ class User:
         friend.friends.discard(self)
         self.friends.discard(friend)
 
+
     def get_friends(self):
         """
             Return list of current users' friends
         """
         return list(self.friends)
+
 
     def add_favorite_movie(self, movie):
         """
@@ -34,17 +38,20 @@ class User:
         """
         self.favorite_movies.add(movie)
 
+
     def get_favorite_movies(self):
         """
             Should return list of user's favorite movies
         """
         return list(self.favorite_movies)
 
+
     def remove_favorite_movie(self, movie):
         """
             Should remove the movie from cur user's list of favorite movies if it exists.
         """
         self.favorite_movies.discard(movie)
+
 
     def get_network_movies(self):
         """
@@ -65,6 +72,7 @@ class User:
                     queue.append(friend)
 
         return network_movies
+
 
     def get_network_favorite_movie(self):
         """
@@ -91,7 +99,40 @@ class User:
                     queue.append(friend)
 
         # return the key with the largest value
-        return max(movie_counter, key=movie_counter.get)
+        values = list(movie_counter.values())
+        keys = list(movie_counter.keys())
+        return keys[values.index(max(values))]
+
+
+    def get_limited_network_favorite_movie(self, degree):
+        """
+            Return the most popular movie among cur user's friend network, limited by n degree of separation
+        """
+        # create dict to track num occurances of specific movie
+        movie_counter = {}
+
+        # run bfs on user's friends and friends of friends
+        queue = deque()
+        queue.append((0, self))
+        visited = set()
+        visited.add(self)
+
+        while queue:
+            degree_from_user, user = queue.popleft()
+            for movie in user.favorite_movies:
+                movie_counter[movie] = movie_counter.get(movie, 0) + 1
+
+            if degree_from_user < degree:
+                for friend in user.get_friends():
+                    if friend not in visited:
+                        visited.add((degree_from_user + 1, friend))
+                        queue.append(friend)
+
+        # return the key with the largest value
+        values = list(movie_counter.values())
+        keys = list(movie_counter.keys())
+        return keys[values.index(max(values))]
+
 
     def __repr__(self) -> str:
         fav_movies = " ".join(self.get_favorite_movies())
