@@ -206,7 +206,41 @@
         The Lord of the Rings FotR: 1,
         The Lord of the Rings RotK: 1,
         The Lord of the Rings TTT: 1,
-        Harry Potter PoA: 1,
+        Harry Potter PoA: 2,
+        Spiderman Into the Spiderverse: 1,
+        Avengers Infinity War: 1,
+        Avengers Endgame: 1,
+        Spiderman Across the Spiderverse: 1
+    }
+    queue = ((3, Grace))
+    visited = {Alice, Erin, Charlie, Bob, Dan, Grace}
+```
+
+- Since Grace is 3 degrees away from Alice, the max degrees we are searching, we are not going to enque her friends after adding processing her movie list
+
+```
+    favorite_movie_counter = {
+        Toy Story: 1,
+        Jumanji: 1,
+        Heat: 1,
+        The Princess Bride: 3,
+        The Pirates of the Caribbean: 1,
+        Forest Gump: 1,
+        Raiders of the Lost Ark: 1,
+        Star Wars ANH: 1,
+        John Wick: 1,
+        John Wick Chapter 2: 1,
+        John Wick Chapter 3: 1,
+        Crouching Tiger, Hidden Dragon: 1,
+        Everything, Everywhere, All At Once: 1,
+        The Lord of the Rings FotR: 1,
+        The Lord of the Rings RotK: 1,
+        The Lord of the Rings TTT: 1,
+        Harry Potter PoA: 2,
+        Spiderman Into the Spiderverse: 1,
+        Avengers Infinity War: 1,
+        Avengers Endgame: 1,
+        Spiderman Across the Spiderverse: 1,
         Spirited Away: 1,
         My Neighbor Totoro: 1,
         Kiki's Delivery Service: 1,
@@ -217,8 +251,7 @@
     visited = {Alice, Erin, Charlie, Bob, Dan, Grace}
 ```
 
-- Since Grace is 3 degrees away from Alice, the max degrees we are searching, we are not going to enque her friends
-- Now we just need to go through favorite_movie_counter and find the movie that occurs most often, in this case The Princess Bride
+- Now the queue is empty and we just need to go through favorite_movie_counter and find the movie that occurs most often, in this case The Princess Bride
 
 ## Final Thoughts
 
