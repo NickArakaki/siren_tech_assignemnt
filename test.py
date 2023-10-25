@@ -47,11 +47,12 @@ Frank.add_favorite_movie("Blazing Saddle")
 Frank.add_favorite_movie("Spaceballs")
 Frank.add_favorite_movie("Robin Hood: Men in Tights")
 Frank.add_favorite_movie("The Producers")
+Frank.add_favorite_movie("Harry Potter and the Prisoner of Azkaban")
 
 Heidi.add_favorite_movie("Spirited Away")
 Heidi.add_favorite_movie("My Neighbor Totoro")
 Heidi.add_favorite_movie("Everything Everywhere All At Once")
-Heidi.add_favorite_movie("The Princess Bride")
+Heidi.add_favorite_movie("Harry Potter and the Prisoner of Azkaban")
 
 # Add establish friendships
 Alice.add_friend(Erin)
@@ -63,4 +64,5 @@ Grace.add_friend(Frank)
 Grace.add_friend(Heidi)
 
 
-print(Alice.get_network_favorite_movie(3))
+print(Alice.get_network_favorite_movie(3)) # The Princess Bride
+print(Alice.get_network_favorite_movie()) # Harry Potter and the Prisoner of Azkaban

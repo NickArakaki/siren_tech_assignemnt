@@ -54,12 +54,12 @@
         return keys[values.index(max(values))]
 ```
 
-- We can easily refactor the above code to take in an additional parameter, degrees
+- We can easily refactor the above code to take in an optional parameter, degree, defaulting to infinity if we want to search the whole network
 - Instead of enquing user objects, we can enque tuples where we include the current degree of separation from the user.
 - During the BFT, we can add a condition where we only enque users where the current degree of separation is less than the passed in argument
 
 ```python
-    def get_network_favorite_movie(degree):
+    def get_network_favorite_movie(degree=float("inf")):
         favorite_movies_counter = {}
         queue = deque()
         visited = set()
@@ -92,6 +92,8 @@
   - m is the number of unique movies in all the favorite movie lists
 
 ## Example
+
+### This section will walk you through the test example in test.py
 
 ![Example Network](image.png)
 
@@ -253,6 +255,123 @@
 
 - Now the queue is empty and we just need to go through favorite_movie_counter and find the movie that occurs most often, in this case The Princess Bride
 
+- We can continue this example to demonstrate searching through the whole network by picking up after processing Grace by enquing her friends
+
+```
+    favorite_movie_counter = {
+        Toy Story: 1,
+        Jumanji: 1,
+        Heat: 1,
+        The Princess Bride: 3,
+        The Pirates of the Caribbean: 1,
+        Forest Gump: 1,
+        Raiders of the Lost Ark: 1,
+        Star Wars ANH: 1,
+        John Wick: 1,
+        John Wick Chapter 2: 1,
+        John Wick Chapter 3: 1,
+        Crouching Tiger, Hidden Dragon: 1,
+        Everything, Everywhere, All At Once: 1,
+        The Lord of the Rings FotR: 1,
+        The Lord of the Rings RotK: 1,
+        The Lord of the Rings TTT: 1,
+        Harry Potter PoA: 2,
+        Spiderman Into the Spiderverse: 1,
+        Avengers Infinity War: 1,
+        Avengers Endgame: 1,
+        Spiderman Across the Spiderverse: 1,
+        Spirited Away: 1,
+        My Neighbor Totoro: 1,
+        Kiki's Delivery Service: 1,
+        Your Name: 1,
+        Suzume: 1
+    }
+    queue = ((4, Frank), (4, Heidi))
+    visited = {Alice, Erin, Charlie, Bob, Dan, Grace, Frank, Heidi}
+```
+
+- After processing Frank
+
+```
+    favorite_movie_counter = {
+        Toy Story: 1,
+        Jumanji: 1,
+        Heat: 1,
+        The Princess Bride: 3,
+        The Pirates of the Caribbean: 1,
+        Forest Gump: 1,
+        Raiders of the Lost Ark: 1,
+        Star Wars ANH: 1,
+        John Wick: 1,
+        John Wick Chapter 2: 1,
+        John Wick Chapter 3: 1,
+        Crouching Tiger, Hidden Dragon: 1,
+        Everything, Everywhere, All At Once: 1,
+        The Lord of the Rings FotR: 1,
+        The Lord of the Rings RotK: 1,
+        The Lord of the Rings TTT: 1,
+        Harry Potter PoA: 3,
+        Spiderman Into the Spiderverse: 1,
+        Avengers Infinity War: 1,
+        Avengers Endgame: 1,
+        Spiderman Across the Spiderverse: 1,
+        Spirited Away: 1,
+        My Neighbor Totoro: 1,
+        Kiki's Delivery Service: 1,
+        Your Name: 1,
+        Suzume: 1,
+        Young Frankenstein: 1,
+        Blazing Saddles: 1,
+        Spaceballs: 1,
+        Robinhood Men in Tights: 1,
+        The Producers: 1
+    }
+    queue = ((4, Heidi))
+    visited = {Alice, Erin, Charlie, Bob, Dan, Grace, Frank, Heidi}
+```
+
+- Finally Heidi
+
+```
+    favorite_movie_counter = {
+        Toy Story: 1,
+        Jumanji: 1,
+        Heat: 1,
+        The Princess Bride: 3,
+        The Pirates of the Caribbean: 1,
+        Forest Gump: 1,
+        Raiders of the Lost Ark: 1,
+        Star Wars ANH: 1,
+        John Wick: 1,
+        John Wick Chapter 2: 1,
+        John Wick Chapter 3: 1,
+        Crouching Tiger, Hidden Dragon: 1,
+        Everything, Everywhere, All At Once: 2,
+        The Lord of the Rings FotR: 1,
+        The Lord of the Rings RotK: 1,
+        The Lord of the Rings TTT: 1,
+        Harry Potter PoA: 4,
+        Spiderman Into the Spiderverse: 1,
+        Avengers Infinity War: 1,
+        Avengers Endgame: 1,
+        Spiderman Across the Spiderverse: 1,
+        Spirited Away: 2,
+        My Neighbor Totoro: 2,
+        Kiki's Delivery Service: 1,
+        Your Name: 1,
+        Suzume: 1,
+        Young Frankenstein: 1,
+        Blazing Saddles: 1,
+        Spaceballs: 1,
+        Robinhood Men in Tights: 1,
+        The Producers: 1
+    }
+    queue = ()
+    visited = {Alice, Erin, Charlie, Bob, Dan, Grace, Frank, Heidi}
+```
+
+- We can see that the new most popular movie is Harry Potter and the Prisoner of Azkaban
+
 ## Final Thoughts
 
--
+This was a fun exercise exploring undirected graph traversal. I had fun thinking about how I wanted to write the User class and am proud of the solution I came up with to account for degrees of separation. While there are probably some further optimizations to improve overall space and time complexities, this is a working solution that is readable and easily maintained. If there are perfomance issues that need to be addressed we can take the time to refactor, but for the time being it's pretty perfomrant and I don't see value in optimizing further ath this time.
