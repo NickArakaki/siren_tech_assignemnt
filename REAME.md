@@ -93,7 +93,7 @@
 
 ## Example
 
-### This section will walk you through the test example in test.py
+### This section will walk you through the test example in test.py, feel free to run the test.py file and verify the results
 
 ![Example Network](image.png)
 
