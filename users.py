@@ -1,3 +1,6 @@
+from collections import deque
+
+
 class User:
     def __init__(self, name):
         self.name = name
@@ -19,6 +22,12 @@ class User:
         friend.friends.discard(self)
         self.friends.discard(friend)
 
+    def get_friends(self):
+        """
+            Return list of current users' friends
+        """
+        return list(self.friends)
+
     def add_favorite_movie(self, movie):
         """
             Should add movie to list of cur user's favorite movies set
@@ -34,20 +43,56 @@ class User:
     def remove_favorite_movie(self, movie):
         """
             Should remove the movie from cur user's list of favorite movies if it exists.
-            If not, should return str 'Movie not found in your favorite movie list'
         """
-        if movie in self.favorite_movies:
-            self.favorite_movies.remove(movie)
-            return f'{movie} was successfully removed from your favorite movies list'
-        else:
-            return f'{movie} could not be found in your list of favorite movies'
+        self.favorite_movies.discard(movie)
+
+    def get_network_movies(self):
+        """
+            Return favorite movies of every user in current user's network including friend of friends
+        """
+        queue = deque()
+        queue.append(self)
+        visited = set()
+        visited.add(self)
+        network_movies = {}
+
+        while queue:
+            user = queue.popleft()
+            network_movies[user] = user.get_favorite_movies()
+            for friend in user.get_friends():
+                if friend not in visited:
+                    visited.add(friend)
+                    queue.append(friend)
+
+        return network_movies
 
     def get_network_favorite_movie(self):
         """
             Return the most popular movie among cur user's friend group,
-            including friend of friends (1 degree of separation)
+            including friend of friends
         """
+        # create dict to track num occurances of specific movie
+        movie_counter = {}
+
+        # run bfs on user's friends and friends of friends
+        queue = deque()
+        queue.append(self)
+        visited = set()
+        visited.add(self)
+
+        while queue:
+            user = queue.popleft()
+            for movie in user.favorite_movies:
+                movie_counter[movie] = movie_counter.get(movie, 0) + 1
+
+            for friend in user.get_friends():
+                if friend not in visited:
+                    visited.add(friend)
+                    queue.append(friend)
+
+        # return the key with the largest value
+        return max(movie_counter, key=movie_counter.get)
 
     def __repr__(self) -> str:
         fav_movies = " ".join(self.get_favorite_movies())
-        return f"{self.name}'s favorite movies are {fav_movies}"
+        return f"{self.name}'s favorite movies are: {fav_movies}"
